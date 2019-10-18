@@ -1,5 +1,6 @@
 pragma solidity >=0.4.25 < 0.6.0;
 
+import './RawMaterial.sol';
 contract Medicine{
 
     address Owner;
@@ -75,7 +76,7 @@ contract Medicine{
         );
 
             status = medicineStatus(1);
-            emit ShippmentUpdate(address(this),shipper,distributer,1,1);
+            emit ShipmentUpdate(address(this),shipper,distributer,1,1);
     }
 
     //function recievePackage()
