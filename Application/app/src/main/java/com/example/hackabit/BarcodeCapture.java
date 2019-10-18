@@ -34,7 +34,7 @@ public final class BarcodeCapture extends AppCompatActivity
 
     private static final String TAG = "Barcode-reader";
 
-    // Intent request code to handle updating play services if needed.
+    // Intent request code to handle updating play services if needed  .
     private static final int RC_HANDLE_GMS = 9001;
 
     // Permission request codes need to be < 256
