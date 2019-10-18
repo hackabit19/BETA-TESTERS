@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import okhttp3.OkHttpClient;
+
 public class MainActivity extends AppCompatActivity {
      Button scan;
      int BARCODE_READER  =1;
@@ -54,5 +56,9 @@ public class MainActivity extends AppCompatActivity {
         }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public static void getApi(String x){
+        OkHttpClient client = new OkHttpClient()
     }
 }
