@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dd.morphingbutton.MorphingButton;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.victor.loading.rotate.RotateLoading;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,6 +49,8 @@ public class Scan extends Fragment implements AIListener {
 
     MorphingButton scan, send;
     EditText texxt;
+    LinearLayout medInfo;
+    RotateLoading rotator;
     int BARCODE_READER  =1;
     FirebaseDatabase database;
     DatabaseReference ref;
@@ -73,7 +77,9 @@ public class Scan extends Fragment implements AIListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         database = FirebaseDatabase.getInstance();
+        rotator = (RotateLoading) view.findViewById(R.id.rotator);
         ref = database.getReference();
+        medInfo = (LinearLayout) view.findViewById(R.id.info);
         scan = (MorphingButton) view.findViewById(R.id.scan);
         final AIConfiguration configuration = new AIConfiguration("Client Access Token",
                 AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
@@ -122,17 +128,18 @@ public class Scan extends Fragment implements AIListener {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MorphingButton.Params circle = MorphingButton.Params.create()
-                        .duration(500)
-                        .cornerRadius(@dimen/R.dimen.mb_height_56) // 56 dp
-                        .width(dimen(R.dimen.mb_height_56)) // 56 dp
-                        .height(dimen(R.dimen.mb_height_56)) // 56 dp
-                        .color(color(R.color.green)) // normal state color
-                        .colorPressed(color(R.color.dark_green)); // pressed state color
-                        // icon
-                scan.morph(circle);
+//                MorphingButton.Params circle = MorphingButton.Params.create()
+//                        .duration(800)
+//                        .cornerRadius(R.dimen.mb_height_56) // 56 dp
+//                        .color(R.color.green) // normal state color
+//                        .colorPressed(R.color.dark_green); // pressed state color
+//                        // icon
+//                scan.morph(circle);
+                scan.animate();
+                scan.setVisibility(View.GONE);
                 Intent intent = new Intent(getContext(), BarcodeCapture.class);
                 startActivityForResult(intent, BARCODE_READER);
+                rotator.start();
             }
         });
 //
@@ -151,12 +158,15 @@ public class Scan extends Fragment implements AIListener {
                         Barcode barcode = data.getParcelableExtra(BarcodeCapture.BarcodeObject);
                         Point[] p = barcode.cornerPoints;
                         Toast.makeText(getContext(), barcode.displayValue + "success", Toast.LENGTH_SHORT).show();
+
                         try {
                             getApi();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
+                        rotator.stop();
+                        scan.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Failed to capture", Toast.LENGTH_SHORT).show();
                     }
                 }catch (Exception e){
@@ -194,6 +204,8 @@ public class Scan extends Fragment implements AIListener {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
+                        rotator.stop();
+                        medInfo.setVisibility(View.VISIBLE);
                     }
                 });
             }
