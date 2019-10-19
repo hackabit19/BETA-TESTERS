@@ -91,6 +91,22 @@
                 android:background="@drawable/shapebutt"
                 android:text="Ingredients"
                 android:textColor="#FFFFFF" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:background="@drawable/shapebutt"
+                android:text="Dosage"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:background="@drawable/shapebutt"
+                android:text="Dosage"
+                android:textColor="#FFFFFF" />
         </com.andexert.library.RippleView>
         </LinearLayout>
     </LinearLayout>
