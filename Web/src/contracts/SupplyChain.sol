@@ -201,14 +201,10 @@ contract SupplyChain {
         address indexed Receiver
     );
 
-    function manufacturMadicine(bytes32 Des,bytes32 RM,uint Quant,address Shpr,address Rcvr,uint RcvrType) public {
+    function manufacturMadicine(bytes32 Des,bytes32 RM,uint Quant,address Shpr,address Rcvr) public {
         require(
             UsersDetails[msg.sender].role == roles.manufacturer,
             "Only manufacturer can call this function"
-        );
-        require(
-            RcvrType != 0,
-            "Receiver Type must be define"
         );
 
         Medicine m = new Medicine(
@@ -217,8 +213,7 @@ contract SupplyChain {
             RM,
             Quant,
             Shpr,
-            Rcvr,
-            RcvrType
+            Rcvr
         );
 
         ManufactureredMedicineBatches[msg.sender].push(address(m));
