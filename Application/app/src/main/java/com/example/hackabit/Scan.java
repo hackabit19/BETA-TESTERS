@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,15 +15,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+import ai.api.AIDataService;
+import ai.api.AIListener;
+import ai.api.android.AIConfiguration;
+import ai.api.android.AIService;
+import ai.api.model.AIError;
+import ai.api.model.AIRequest;
+import ai.api.model.AIResponse;
+import ai.api.model.Result;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -30,10 +42,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class Scan extends Fragment {
+public class Scan extends Fragment implements AIListener {
 
-    Button scan;
+    Button scan, send;
+    EditText texxt;
     int BARCODE_READER  =1;
+    FirebaseDatabase database;
+    DatabaseReference ref;
 
     private OnFragmentInteractionListener mListener;
 
@@ -41,10 +56,14 @@ public class Scan extends Fragment {
         // Required empty public constructor
     }
 
+    private AIService aiService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -53,9 +72,55 @@ public class Scan extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         scan = (Button) view.findViewById(R.id.scan);
+        send = (Button) view.findViewById(R.id.send);
+        texxt = (EditText) view.findViewById(R.id.texxt);
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference();
+        final AIConfiguration configuration = new AIConfiguration("Client Access Token",
+                AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
+        aiService = AIService.getService(getContext(), configuration);
+        aiService.setListener( this);
+        final AIDataService aiDataService = new AIDataService(configuration);
+        final AIRequest request = new AIRequest();
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message = texxt.getText().toString().trim();
+                if (!message.equals("")) {
+                    ChatMessage chatMessage = new ChatMessage(message, "user");
+                    ref.child("chat").push().setValue(chatMessage);
+                    request.setQuery(message);
+                    new AsyncTask<AIRequest, Void, AIResponse>() {
+                        @Override
+                        protected AIResponse doInBackground(AIRequest... aiRequests) {
+                            final AIRequest request1 = aiRequests[0];
+                            try {
+                                final AIResponse response = aiDataService.request(request1);
+                                return response;
+                            } catch (Exception e) {
+                                return null;
+                            }
+                        }
 
-                Intent intent = new Intent(getContext(), BarcodeCapture.class);
-                startActivityForResult(intent, BARCODE_READER);
+                        @Override
+                        protected void onPostExecute(AIResponse aiResponse) {
+                            if (aiResponse != null) {
+                                Result result = aiResponse.getResult();
+                                String reply = result.getFulfillment().getSpeech();
+                                ChatMessage chatMessage1 = new ChatMessage(reply, "bot");
+                                ref.child("chat").push().setValue(chatMessage1);
+                            }
+                        }
+
+
+                    }.execute(request);
+                } else {
+                    aiService.startListening();
+                }
+            }});
+//        Intent intent = new Intent(getContext(), BarcodeCapture.class);
+//        startActivityForResult(intent, BARCODE_READER);
+
 //                startActivity(new Intent(MainActivity.this, MAct.class));
 
         return view;
@@ -131,7 +196,37 @@ public class Scan extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    
+
+    @Override
+    public void onResult(AIResponse result) {
+
+    }
+
+    @Override
+    public void onError(AIError error) {
+
+    }
+
+    @Override
+    public void onAudioLevel(float level) {
+
+    }
+
+    @Override
+    public void onListeningStarted() {
+
+    }
+
+    @Override
+    public void onListeningCanceled() {
+
+    }
+
+    @Override
+    public void onListeningFinished() {
+
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
