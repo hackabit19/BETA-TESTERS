@@ -1,18 +1,24 @@
 package com.example.hackabit;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,76 +31,45 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-     Button scan;
-     int BARCODE_READER  =1;
+    private TextView mTextMessage;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment = null;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    fragment = new Scan();
+                    break;
+                case R.id.navigation_dashboard:
+                    fragment = new Chat();
+                    break;
+            }
+            if(fragment != null){
+                FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentFrame, fragment);
+                ft.commit();
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        scan = (Button) findViewById(R.id.scan);
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), BarcodeCapture.class);
-//                startActivityForResult(intent, BARCODE_READER);
-                startActivity(new Intent(MainActivity.this, MAct.class));
-            }
-        });
+        setContentView(R.layout.activity_m);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        Fragment frag = new Scan();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentFrame, frag);
+        fragmentTransaction.commit();
+        mTextMessage = findViewById(R.id.message);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == BARCODE_READER){
-            if(resultCode == CommonStatusCodes.SUCCESS){
-                if(data!=null){
-                    Barcode barcode = data.getParcelableExtra(BarcodeCapture.BarcodeObject);
-                    Point[] p = barcode.cornerPoints;
-                    Toast.makeText(this, barcode.displayValue + "success", Toast.LENGTH_SHORT).show();
-//                    amount.setText("Amount Last Received: " + barcode.displayValue);
-                    try{
-                        getApi();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-
-                }else {
-                    Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
-                }
-            }else {
-                Log.v("AAA", CommonStatusCodes.getStatusCodeString(resultCode));
-
-            }
-        }else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    void getApi(){
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("https://iterar-mapi-us.p.rapidapi.com/api/amoxicillin/substances.json")
-                .get()
-                .addHeader("x-rapidapi-host", "iterar-mapi-us.p.rapidapi.com")
-                .addHeader("x-rapidapi-key", "a1c8ed372fmsh901e8630dcc0404p16bb80jsn41d38cb8b4c7")
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                final String resp = response.body().string();
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, resp, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
 }
