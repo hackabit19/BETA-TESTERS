@@ -1,5 +1,9 @@
 import React , { Component} from 'react'
 import { Button } from '@material-ui/core';
+import Back from '../../images/background2.jpg'
+import Web3 from 'web3';
+import supply from '../../abis/SupplyChain.json'
+
 
 class Manufacturer extends Component{
 
@@ -20,6 +24,34 @@ class Manufacturer extends Component{
     componentDidMount(){
         
     }
+
+    async loadBlockchainData(){
+        const web3 = window.web3
+        const account = await web3.eth.getAccounts()
+        this.setState({account: account[0]})
+        const networkId = await web3.eth.net.getId()
+        const networkData = supply.networks[networkId]
+        if(networkData){
+          const abi = supply.abi;
+          const address = networkData.address;
+          console.log(address);
+          const contract = web3.eth.Contract(abi, address)
+          this.setState({contract})
+        }else{
+          window.alert('Smart contract not deployed')
+        }
+      }
+    
+      async loadWeb3() {
+        if(window.ethereum){
+          window.web3 = new Web3(window.ethereum)
+          await window.ethereum.enable()
+        }if(window.web3){
+          window.web3 = new Web3(window.web3.currentProvider)
+        }else{
+          window.alert('Please use Metamask!')
+        }
+      }
 
     edithandler = (event) => {
         event.preventDefault()
@@ -102,7 +134,12 @@ class Manufacturer extends Component{
         console.log(this.state)
         
         return(
-           <section classNmae="p-5">
+           <section classNmae="p-5" style={{
+                background:`url(${Back}`,
+                backgroundSize : "cover",
+                backgroundRepeat : "no-repeat",
+                backgroundPosition :"center"}}>
+                <div className="manu-col">
                 <div className="container">
                     <div className="row">
                         <div className="col text-center">
@@ -126,67 +163,71 @@ class Manufacturer extends Component{
                     </div>
                     <div className="row mt-4">
                         <div className="col text-center">
-                            <button
+                        <Button className="btn btn-block btn-outline-danger mx-auto" 
                             onClick={(event) => this.edithandler(event)}
-                            className="btn btn-outline-success" style={{width:"40%",fontSize:"20px"}}>Edit</button>
+                            style={{width:"60%" ,background:"linear-gradient(to right,rgba(205,52,181),rgba(68,166,187))",borderRadius:"10px"}}
+                            >Edit</Button>
                         </div>
                     </div>
                 </div>
                 <div className="container mt-5">
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label className="mr-3">Raw materials : </label>
-                            <input type="text" placeholder="raw packages"  onChange={(event) => this.handleChange(event,'raw')}></input>     
+                            
+                            <input className="input-manu" type="text" placeholder="raw packages"  onChange={(event) => this.handleChange(event,'raw')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Batch Id : </label>
-                            <input  type="text" placeholder="batch Id" onChange={(event) => this.handleChange(event,'batchId')}></input>     
+                           
+                            <input className="input-manu" type="text" placeholder="batch Id" onChange={(event) => this.handleChange(event,'batchId')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Description : </label>
-                            <input  type="text" placeholder="description"  onChange={(event) => this.handleChange(event,'desc')}></input>     
+
+                            <input className="input-manu" type="text" placeholder="description"  onChange={(event) => this.handleChange(event,'desc')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Branch Name : </label>
-                            <input  type="text" placeholder="Branch Name"  onChange={(event) => this.handleChange(event,'farmer')}></input>     
+                           
+                            <input className="input-manu"  type="text" placeholder="Farmer Name"  onChange={(event) => this.handleChange(event,'farmer')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Location : </label>
-                            <input  type="text" placeholder="Location"  onChange={(event) => this.handleChange(event,'location')}></input>     
+                           
+                            <input className="input-manu"  type="text" placeholder="Location"  onChange={(event) => this.handleChange(event,'location')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Quantity : </label>
-                            <input  type="text" placeholder="Quantity"  onChange={(event) => this.handleChange(event,'quantity')}></input>     
+                           
+                            <input className="input-manu"  type="text" placeholder="Quantity"  onChange={(event) => this.handleChange(event,'quantity')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Shiper Manufacturer : </label>
-                            <input  type="text" placeholder="Shiper Manufacturer"  onChange={(event) => this.handleChange(event,'manu')}></input>     
+                          
+                            <input className="input-manu" type="text" placeholder="Shiper Manufacturer"  onChange={(event) => this.handleChange(event,'manu')}></input>     
                         </div>
                     </div>
                     
                     <div className="row mb-3">
                         <div className="col text-center">
-                            <label  className="mr-3">Status : </label>
-                            <input  type="text" placeholder="status"  onChange={(event) => this.handleChange(event,'status')}></input>     
+                          
+                            <input className="input-manu"  type="text" placeholder="status"  onChange={(event) => this.handleChange(event,'status')}></input>     
                         </div>
                     </div>
                     <div className="row mb-3">
-                        <div className="col text-center">
-                            <button className="btn btn-block btn-danger" onClick={this.handleValidate}>Validate</button>  
+                        <div className="col text-center mb-4">
+                        <Button className="btn btn-block btn-outline-danger mx-auto" 
+                            style={{width:"60%" ,background:"linear-gradient(to right,rgba(205,52,181),rgba(68,166,187))",borderRadius:"10px"}}
+                            >Validate</Button>
                         </div>
                     </div>
+                </div>
                 </div>
            </section>
         )

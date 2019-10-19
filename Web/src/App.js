@@ -6,6 +6,7 @@ import Login from './components/login/Login'
 import PublicRoutes from './components/PublicRoutes/index'
 import PrivateRoutes from './components/PrivateRoutes/index'
 import Admin from './components/admin/admin'
+import Distributer from './components/Distributor/distributor'
 import Home from './components/home/home'
 import AppBar from './components/common/appbar'
 
@@ -21,7 +22,7 @@ class App extends Component{
         <PublicRoutes path="/login" component={Login} exact restricted={true} user={this.props.user} />
         <PrivateRoutes path="/admin" component={Admin} exact user={this.props.user} />
         <PublicRoutes path="/manufacturer" component={Manufacturer} exact user={this.props.user} restricted={false} />
-        <Route path="/manufacturer" component={Manufacturer} exact user={this.props.user} />
+        <PublicRoutes path="/distributer" component={Distributer} exact user={this.props.user} restricted={false} />
       </Switch>
       </>
     )

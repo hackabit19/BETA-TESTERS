@@ -14,7 +14,7 @@ import {
 
   import { firebase } from '../../firebase'
  
- /* import User from '../../images/man-user.png'*/
+  import User from '../../images/man-user.png'
  
  export default class AppBar extends React.Component {
   constructor(props) {
@@ -99,7 +99,7 @@ import {
               <NavItem className=" ml-md-auto" onClick={(event) => this.handleUserPanel(event)}>
                 <NavLink  href=""  style={{color:"white"}}>
                   <div className="signIn" onClick={(event) => this.handleUserPanel(event)}>
-                    <img src="" className="img-fluid"></img> 
+                    <img src={User} className="img-fluid"></img> 
                   </div>
                   {this.state.openUserPanel ? 
                   <>

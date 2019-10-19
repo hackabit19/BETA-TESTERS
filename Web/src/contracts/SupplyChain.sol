@@ -323,7 +323,7 @@ contract SupplyChain {
     ) public {
         require(
             UsersDetails[msg.sender].role == roles.pharma &&
-            msg.sender == Medicine(BatchID).getWDP()[2],
+            msg.sender == Medicine(BatchID).getWDP()[1],
             "Only Pharma or current owner of package can call this function"
         );
         require(sale[BatchID] == salestatus(1), "madicine Must be at Pharma");

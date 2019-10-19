@@ -48,7 +48,7 @@ contract Distributer{
         );
         status = packageStatus(2);
 
-        Medicine(BatchID).recievedDP(
+        Medicine(BatchID).recieveDP(
             Receiver
         );
     }
