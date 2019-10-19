@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Chat">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
     <com.andexert.library.RippleView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -29,10 +34,14 @@
 
     </LinearLayout>
     </com.andexert.library.RippleView>
-    <TimePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/timepick"
-        android:visibility="gone"></TimePicker>
-
+        <TimePicker
+            android:layout_width="match_parent"
+            android:id="@+id/timepicker"
+            android:layout_height="match_parent"
+            android:visibility="gone"></TimePicker>
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rv"></androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 </FrameLayout>
