@@ -71,55 +71,61 @@ public class Scan extends Fragment implements AIListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
-        scan = (Button) view.findViewById(R.id.scan);
-        send = (Button) view.findViewById(R.id.send);
-        texxt = (EditText) view.findViewById(R.id.texxt);
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
+        scan = (Button) view.findViewById(R.id.scan);
         final AIConfiguration configuration = new AIConfiguration("Client Access Token",
                 AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
         aiService = AIService.getService(getContext(), configuration);
         aiService.setListener( this);
         final AIDataService aiDataService = new AIDataService(configuration);
         final AIRequest request = new AIRequest();
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String message = texxt.getText().toString().trim();
-                if (!message.equals("")) {
-                    ChatMessage chatMessage = new ChatMessage(message, "user");
-                    ref.child("chat").push().setValue(chatMessage);
-                    request.setQuery(message);
-                    new AsyncTask<AIRequest, Void, AIResponse>() {
-                        @Override
-                        protected AIResponse doInBackground(AIRequest... aiRequests) {
-                            final AIRequest request1 = aiRequests[0];
-                            try {
-                                final AIResponse response = aiDataService.request(request1);
-                                return response;
-                            } catch (Exception e) {
-                                return null;
-                            }
-                        }
-
-                        @Override
-                        protected void onPostExecute(AIResponse aiResponse) {
-                            if (aiResponse != null) {
-                                Result result = aiResponse.getResult();
-                                String reply = result.getFulfillment().getSpeech();
-                                ChatMessage chatMessage1 = new ChatMessage(reply, "bot");
-                                ref.child("chat").push().setValue(chatMessage1);
-                            }
-                        }
-
-
-                    }.execute(request);
-                } else {
-                    aiService.startListening();
-                }
-            }});
+//        send.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String message = texxt.getText().toString().trim();
+//                if (!message.equals("")) {
+//                    ChatMessage chatMessage = new ChatMessage(message, "user");
+//                    ref.child("chat").push().setValue(chatMessage);
+//                    request.setQuery(message);
+//                    new AsyncTask<AIRequest, Void, AIResponse>() {
+//                        @Override
+//                        protected AIResponse doInBackground(AIRequest... aiRequests) {
+//                            final AIRequest request1 = aiRequests[0];
+//                            try {
+//                                final AIResponse response = aiDataService.request(request1);
+//                                return response;
+//                            } catch (Exception e) {
+//                                return null;
+//                            }
+//                        }
+//
+//                        @Override
+//                        protected void onPostExecute(AIResponse aiResponse) {
+//                            if (aiResponse != null) {
+//                                Result result = aiResponse.getResult();
+//                                String reply = result.getFulfillment().getSpeech();
+//                                ChatMessage chatMessage1 = new ChatMessage(reply, "bot");
+//                                ref.child("chat").push().setValue(chatMessage1);
+//                            }
+//                        }
+//
+//
+//                    }.execute(request);
+//                } else {
+//                    aiService.startListening();
+//                }
+//            }});
 //        Intent intent = new Intent(getContext(), BarcodeCapture.class);
 //        startActivityForResult(intent, BARCODE_READER);
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), BarcodeCapture.class);
+                startActivityForResult(intent, BARCODE_READER);
+            }
+        });
+//
 
 //                startActivity(new Intent(MainActivity.this, MAct.class));
 
