@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dd.morphingbutton.MorphingButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +45,7 @@ import okhttp3.Response;
 
 public class Scan extends Fragment implements AIListener {
 
-    Button scan, send;
+    MorphingButton scan, send;
     EditText texxt;
     int BARCODE_READER  =1;
     FirebaseDatabase database;
@@ -73,7 +74,7 @@ public class Scan extends Fragment implements AIListener {
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
-        scan = (Button) view.findViewById(R.id.scan);
+        scan = (MorphingButton) view.findViewById(R.id.scan);
         final AIConfiguration configuration = new AIConfiguration("Client Access Token",
                 AIConfiguration.SupportedLanguages.English, AIConfiguration.RecognitionEngine.System);
         aiService = AIService.getService(getContext(), configuration);
@@ -121,6 +122,15 @@ public class Scan extends Fragment implements AIListener {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MorphingButton.Params circle = MorphingButton.Params.create()
+                        .duration(500)
+                        .cornerRadius(@dimen/R.dimen.mb_height_56) // 56 dp
+                        .width(dimen(R.dimen.mb_height_56)) // 56 dp
+                        .height(dimen(R.dimen.mb_height_56)) // 56 dp
+                        .color(color(R.color.green)) // normal state color
+                        .colorPressed(color(R.color.dark_green)); // pressed state color
+                        // icon
+                scan.morph(circle);
                 Intent intent = new Intent(getContext(), BarcodeCapture.class);
                 startActivityForResult(intent, BARCODE_READER);
             }
