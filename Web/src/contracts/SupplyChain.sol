@@ -293,16 +293,16 @@ contract SupplyChain {
 
     /********************************************** Pharma Section ******************************************/
     
-    mapping(address => address[]) MadicineBatchAtPharma;
+    mapping(address => address[]) MedicineBatchAtPharma;
 
     
-    function madicineRecievedAtPharma(address batchid,address cid) public {
+    function medicineRecievedAtPharma(address batchid,address cid) public {
         require(
             UsersDetails[msg.sender].role == roles.pharma,
             "Only Pharma Can call this function."
         );
         Distributer(cid).recieveDP(batchid, msg.sender);
-        MadicineBatchAtPharma[msg.sender].push(batchid);
+        MedicineBatchAtPharma[msg.sender].push(batchid);
         sale[batchid] = salestatus(1);
     }
 
@@ -316,7 +316,7 @@ contract SupplyChain {
 
     mapping(address => salestatus) sale;
 
-    event MadicineStatus(
+    event MedicineStatus(
         address BatchID,
         address indexed Pharma,
         uint status
@@ -334,7 +334,7 @@ contract SupplyChain {
         require(sale[BatchID] == salestatus(1), "madicine Must be at Pharma");
         sale[BatchID] = salestatus(Status);
 
-        emit MadicineStatus(BatchID, msg.sender, Status);
+        emit MedicineStatus(BatchID, msg.sender, Status);
     }
 
     function salesInfo(
@@ -352,7 +352,7 @@ contract SupplyChain {
             UsersDetails[msg.sender].role == roles.pharma,
             "Only Wholesaler or current owner of package can call this function"
         );
-        return  MadicineBatchAtPharma[msg.sender].length;
+        return  MedicineBatchAtPharma[msg.sender].length;
     }
 
     function getBatchIdByIndexP(uint index) public view returns(address BatchID){
@@ -360,7 +360,7 @@ contract SupplyChain {
             UsersDetails[msg.sender].role == roles.pharma,
             "Only Wholesaler or current owner of package can call this function"
         );
-        return MadicineBatchAtPharma[msg.sender][index];
+        return MedicineBatchAtPharma[msg.sender][index];
     }
 
 }
