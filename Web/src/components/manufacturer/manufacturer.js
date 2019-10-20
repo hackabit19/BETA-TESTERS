@@ -37,7 +37,7 @@ class Manufacturer extends Component{
     async loadBlockchainData(){
         const web3 = window.web3
         const account = await web3.eth.getAccounts();
-        const balance = web3.eth.getBalance(this.state.address);
+        //const balance = web3.eth.getBalance(this.state.address);
         console.log(account);
         this.setState({address: account[0]});
         const networkId = await web3.eth.net.getId()
@@ -127,7 +127,7 @@ class Manufacturer extends Component{
                 "type": "function"
             }
         ];
-          const address = "0x2F0c54cc9ADa1E1d05878D1c83974b772601e30C";
+          const address = "0x715c220362f1f1eC3D098a3715eCa7d36ee379fB";
           console.log(address);
           const contract = web3.eth.Contract(abi, address)
           this.setState({contract})

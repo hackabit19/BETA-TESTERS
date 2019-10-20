@@ -114,7 +114,7 @@ class Admin extends Component{
                 "type": "function"
             }
         ];
-          const address = "0x2F0c54cc9ADa1E1d05878D1c83974b772601e30C";
+          const address = "0x715c220362f1f1eC3D098a3715eCa7d36ee379fB";
           console.log(address);
           const contract = web3.eth.Contract(abi, address)
           this.setState({contract})

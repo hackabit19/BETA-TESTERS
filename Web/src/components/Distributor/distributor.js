@@ -5,19 +5,19 @@ import { Button } from '@material-ui/core'
 class Distributor extends Component{
 
     state = {
-        address : 1234,
-        balance : 124,
+        address : "0xC4a45a901C18e26d715081AF4b1F81A51F424737",
+        balance : 100,
         name : `harshit`,
-        location : "171717",
-        role : "developer",
-        batchId  : 1,
+        location : "Delhi",
+        role : "Manufacturer",
+        batchId  : "0x959E40B3fFbe47F536C60d81A1becDcAC1940176",
         desc : `hi there`,
-        farmer : "jindal",
-        location : "delhi",
-        quantity  :15,
-        shipper : 'anubhav',
+        farmer : "Akshat",
+        location : "Rohini",
+        quantity  :20,
+        shipper : '0xEfB319B6A4C5FEe05f9ece07003a0D560552Be36',
         mname : "harshit",
-        maddress : "ranchi",
+        maddress : "0x90d75d7Aa556fa642e2B1476ef9924C36969d26e",
         mlocation : "dehradun"
     }
 
@@ -44,7 +44,7 @@ class Distributor extends Component{
                             </div>
                             <div className="row mb-3">
                                 <div className="col pl-5">
-                                <h2 className="distributor-text">Eth Address : <span className="distributor-text-sec">
+                                <h2 className="distributor-text">Eth Address : <span style={{fontSize: 20}} className="distributor-text-sec">
                                     {this.state.address}</span></h2>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ class Distributor extends Component{
                         }}>
                         <div className="row mb-3">
                                 <div className="col pl-5">
-                                <h2 className="distributor-text">BatchId : <span className="distributor-text-sec">
+                                <h2 className="distributor-text">BatchId : <span style={{fontSize: 15}} className="distributor-text-sec">
                                     {this.state.batchId}</span></h2>
                                 </div>
                         </div>
@@ -114,7 +114,7 @@ class Distributor extends Component{
                         </div>
                         <div className="row mb-3">
                                 <div className="col pl-5">
-                                <h2 className="distributor-text">Shipper : <span className="distributor-text-sec">
+                                <h2 className="distributor-text">Shipper : <span style={{fontSize: 15}} className="distributor-text-sec">
                                     {this.state.shipper}</span></h2>
                                 </div>
                         </div>
@@ -130,7 +130,7 @@ class Distributor extends Component{
                         </div>
                         <div className="row mb-3">
                                 <div className="col pl-5">
-                                <h2 className="distributor-text">Manufacturer Address : <span className="distributor-text-sec">
+                                <h2 className="distributor-text">Manufacturer Address : <span style={{fontSize: 15}} className="distributor-text-sec">
                                     {this.state.maddress}</span></h2>
                                 </div>
                         </div>
