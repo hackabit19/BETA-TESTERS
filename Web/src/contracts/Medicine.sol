@@ -13,8 +13,8 @@ contract Medicine{
         deliveredatP
     }
 
-    bytes32 description;
-    bytes32 rawmaterials;
+    string description;
+    string rawmaterials;
     uint quantity;
     address shipper;
     address manufacturer;
@@ -32,8 +32,8 @@ contract Medicine{
 
     constructor(
         address Manu,
-        bytes32 Des,
-        bytes32 RM,
+        string memory Des,
+        string memory RM,
         uint Quant,
         address Shpr,
         address Rcvr
@@ -47,7 +47,7 @@ contract Medicine{
         distributer = Rcvr;
     }
 
-    function getMedicineInfo () public view returns(address, bytes32, bytes32, uint, address){
+    function getMedicineInfo () public view returns(address, string memory, string memory, uint, address){
         return(
             manufacturer,
             description,

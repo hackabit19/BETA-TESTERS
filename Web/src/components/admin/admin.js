@@ -3,6 +3,8 @@ import AdminImage from '../../images/admin.png'
 import Slide from 'react-reveal/Slide'
 import Zoom from 'react-reveal/Zoom'
 import Fade from 'react-reveal/Fade'
+import Web3 from 'web3'
+import supply from '../../abis/SupplyChain.json'
 
 class Admin extends Component{
 
@@ -10,8 +12,116 @@ class Admin extends Component{
         address : null,
         name : null,
         location : null,
-        role : null
+        role : null,
+        account : null,
+        contract : null
     }
+
+    async componentWillMount(){
+        await this.loadBlockchainData();
+    }
+
+    async loadBlockchainData(){
+        const web3 = window.web3
+        const account = await web3.eth.getAccounts();
+        //const balance = web3.eth.getBalance(this.state.address);
+        console.log(account);
+        this.setState({account: account[0]});
+        const networkId = await web3.eth.net.getId()
+        const networkData = supply.networks[networkId]
+        //if(networkData){
+          const abi = [
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "_Shipper",
+                        "type": "address"
+                    }
+                ],
+                "name": "pickDP",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "_Receiver",
+                        "type": "address"
+                    }
+                ],
+                "name": "recieveDP",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Sender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Shipper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Receiver",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getBatchIDStatus",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+          const address = "0x2F0c54cc9ADa1E1d05878D1c83974b772601e30C";
+          console.log(address);
+          const contract = web3.eth.Contract(abi, address)
+          this.setState({contract})
+        //}else{
+         // window.alert('Smart contract not deployed')
+        //}
+      }
 
     handleChange  = (event,name) => {
         if(name == 'name'){
@@ -46,6 +156,8 @@ class Admin extends Component{
         }
 
         console.log(dataToSubmit)
+
+        this.state.contract.methods.registerUser(this.state.address, this.state.name, this.state.location, this.state.role).send({from: this.state.account})
         
     }
 

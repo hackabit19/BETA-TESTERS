@@ -1785,10 +1785,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1537:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1937,10 +1937,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1658:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2065,7 +2065,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1666,
+                            "referencedDeclaration": 1694,
                             "src": "1849:4:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_Medicine_$334",
@@ -2366,10 +2366,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1997:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2698,10 +2698,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "2239:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -4485,10 +4485,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1537:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -4637,10 +4637,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1658:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -4765,7 +4765,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1666,
+                            "referencedDeclaration": 1694,
                             "src": "1849:4:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_Medicine_$334",
@@ -5066,10 +5066,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "1997:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5398,10 +5398,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        1654,
-                        1655
+                        1682,
+                        1683
                       ],
-                      "referencedDeclaration": 1655,
+                      "referencedDeclaration": 1683,
                       "src": "2239:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -5581,7 +5581,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.2",
-  "updatedAt": "2019-10-19T18:52:27.056Z",
+  "updatedAt": "2019-10-20T00:21:11.793Z",
   "devdoc": {
     "methods": {}
   },

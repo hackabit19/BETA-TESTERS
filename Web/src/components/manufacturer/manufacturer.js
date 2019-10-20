@@ -4,11 +4,19 @@ import Back from '../../images/background2.jpg'
 import Web3 from 'web3';
 import supply from '../../abis/SupplyChain.json'
 
+var ipfsClient = require('ipfs-http-client');
+var ipfs = ipfsClient({ host:'ipfs.infura.io', port: 5001, protocol: 'https'});
+
 
 class Manufacturer extends Component{
 
+    constructor(props){
+        super(props);
+        this.onPress = this.onPress.bind(this);
+    }
+
     state = {
-        address : 1234,
+        address : null,
         balance : 1,
         transaction: 50,
         batchId : null,
@@ -18,40 +26,116 @@ class Manufacturer extends Component{
         Location  :null,
         Quantity : null,
         manu : null,
-        status : null
+        status : null,
+        contract: null
     }
 
-    componentDidMount(){
-        
+    async componentWillMount(){
+        await this.loadBlockchainData();
     }
 
     async loadBlockchainData(){
         const web3 = window.web3
-        const account = await web3.eth.getAccounts()
-        this.setState({account: account[0]})
+        const account = await web3.eth.getAccounts();
+        const balance = web3.eth.getBalance(this.state.address);
+        console.log(account);
+        this.setState({address: account[0]});
         const networkId = await web3.eth.net.getId()
         const networkData = supply.networks[networkId]
-        if(networkData){
-          const abi = supply.abi;
-          const address = networkData.address;
+        //if(networkData){
+          const abi = [
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "_Shipper",
+                        "type": "address"
+                    }
+                ],
+                "name": "pickDP",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "_Receiver",
+                        "type": "address"
+                    }
+                ],
+                "name": "recieveDP",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "BatchID",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Sender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Shipper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "Receiver",
+                        "type": "address"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getBatchIDStatus",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+          const address = "0x2F0c54cc9ADa1E1d05878D1c83974b772601e30C";
           console.log(address);
           const contract = web3.eth.Contract(abi, address)
           this.setState({contract})
-        }else{
-          window.alert('Smart contract not deployed')
-        }
+        //}else{
+         // window.alert('Smart contract not deployed')
+        //}
       }
     
-      async loadWeb3() {
-        if(window.ethereum){
-          window.web3 = new Web3(window.ethereum)
-          await window.ethereum.enable()
-        }if(window.web3){
-          window.web3 = new Web3(window.web3.currentProvider)
-        }else{
-          window.alert('Please use Metamask!')
-        }
-      }
 
     edithandler = (event) => {
         event.preventDefault()
@@ -127,6 +211,31 @@ class Manufacturer extends Component{
 
 
         console.log(dataToSubmit)
+    }
+
+    async onPress(){
+        const data = JSON.stringify({
+            batchId: this.state.batchId,
+            RawMaterial: this.state.raw,
+            description: this.state.desc,
+            farmerName: this.state.farmerName,
+            location: this.state.Location,
+            quantity: this.state.Quantity,
+            manu: this.state.manu
+        })
+
+        try{
+            const result = await ipfs.add(data)
+            if(!result) throw new Error("uploading data failed");
+            console.log("ipfs result", result);
+            const Hash = result[0].hash;
+            console.log(Hash);
+            this.state.contract.methods.setHash(Hash).send({from: this.state.address})
+          }catch (err){
+            console.error(err);
+          }
+
+        
     }
 
     render(){
@@ -214,16 +323,16 @@ class Manufacturer extends Component{
                         </div>
                     </div>
                     
-                    <div className="row mb-3">
+                    {/* <div className="row mb-3">
                         <div className="col text-center">
                           
                             <input className="input-manu"  type="text" placeholder="status"  onChange={(event) => this.handleChange(event,'status')}></input>     
                         </div>
-                    </div>
+                    </div> */}
                     <div className="row mb-3">
                         <div className="col text-center mb-4">
                         <Button className="btn btn-block btn-outline-danger mx-auto" 
-                            style={{width:"60%" ,background:"linear-gradient(to right,rgba(205,52,181),rgba(68,166,187))",borderRadius:"10px"}}
+                            style={{width:"60%" ,background:"linear-gradient(to right,rgba(205,52,181),rgba(68,166,187))",borderRadius:"10px"}} onClick={this.onPress}
                             >Validate</Button>
                         </div>
                     </div>

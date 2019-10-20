@@ -1,8 +1,24 @@
 import React, { Component } from 'react'
 import { firebase } from '../../firebase'
 import Image from '../../images/medicine.jpg'
+import Web3 from 'web3'
 
 class Home extends Component {
+
+    async componentWillMount(){
+        await this.loadWeb3();
+    }
+    
+      async loadWeb3() {
+        if(window.ethereum){
+          window.web3 = new Web3(window.ethereum)
+          await window.ethereum.enable()
+        }if(window.web3){
+          window.web3 = new Web3(window.web3.currentProvider)
+        }else{
+          window.alert('Please use Metamask!')
+        }
+      }
 
     toggleManufacturer = () => {
         console.log(this.props)

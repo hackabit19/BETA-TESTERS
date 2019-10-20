@@ -66,12 +66,12 @@ class Distributor extends Component{
                                     {this.state.location}</span></h2>
                                 </div>
                             </div>
-                            <div className="row mb-3">
+                            {/* <div className="row mb-3">
                                 <div className="col pl-5">
                                 <h2 className="distributor-text">Name : <span className="distributor-text-sec">
                                     {this.state.role}</span></h2>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

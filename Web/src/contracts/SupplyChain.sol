@@ -30,11 +30,11 @@ contract SupplyChain {
         revoke
     }
 
-    event UserRegister(address indexed EthAddress, bytes32 Name);
-    event UserRoleRevoked(address indexed EthAddress, bytes32 Name, uint Role);
-    event UserRoleRessigne(address indexed EthAddress, bytes32 Name, uint Role);
+    event UserRegister(address indexed EthAddress, string Name);
+    event UserRoleRevoked(address indexed EthAddress, string Name, uint Role);
+    event UserRoleRessigne(address indexed EthAddress, string Name, uint Role);
 
-    function registerUser(address EthAddress,bytes32 Name,bytes32 Location,uint Role) public onlyOwner{
+    function registerUser(address EthAddress,string memory Name,string memory Location,uint Role) public onlyOwner{
         require(UsersDetails[EthAddress].role == roles.norole, "User Already registered");
         UsersDetails[EthAddress].name = Name;
         UsersDetails[EthAddress].location = Location;
@@ -58,8 +58,8 @@ contract SupplyChain {
 
     /********************************************** User Section **********************************************/
     struct UserInfo {
-        bytes32 name;
-        bytes32 location;
+        string name;
+        string location;
         address ethAddress;
         roles role;
     }
@@ -68,7 +68,7 @@ contract SupplyChain {
     mapping(address => UserInfo) UsersDetails;
     address[] users;
 
-    function getUserInfo(address User) public view returns(bytes32 name,bytes32 location,address ethAddress,roles role) {
+    function getUserInfo(address User) public view returns(string memory name,string memory location,address ethAddress,roles role) {
         return (
             UsersDetails[User].name,
             UsersDetails[User].location,
@@ -81,7 +81,7 @@ contract SupplyChain {
         return users.length;
     }
 
-    function getUserbyIndex(uint index) public view returns(bytes32 name,bytes32 location,address ethAddress,roles role) {
+    function getUserbyIndex(uint index) public view returns(string memory name,string memory location,address ethAddress,roles role) {
         return getUserInfo(users[index]);
     }
 
@@ -96,9 +96,9 @@ contract SupplyChain {
     );
 
     function createRawPackage(
-        bytes32 Des,
-        bytes32 FN,
-        bytes32 Loc,
+        string memory Des,
+        string memory FN,
+        string memory Loc,
         uint Quant,
         address Shpr,
         address Rcvr
@@ -166,6 +166,7 @@ contract SupplyChain {
     /********************************************** Manufacturer Section ******************************************/
     
     mapping(address => address[]) RawPackagesAtManufacturer;
+    mapping(address => string) Hash;
 
     function  rawPackageReceived(address pid) public {
         require(
@@ -201,7 +202,7 @@ contract SupplyChain {
         address indexed Receiver
     );
 
-    function manufacturMadicine(bytes32 Des,bytes32 RM,uint Quant,address Shpr,address Rcvr) public {
+    function manufacturMadicine(string memory Des,string memory RM,uint Quant,address Shpr,address Rcvr) public {
         require(
             UsersDetails[msg.sender].role == roles.manufacturer,
             "Only manufacturer can call this function"
@@ -234,6 +235,14 @@ contract SupplyChain {
             "Only Manufacturer Can call this function."
         );
         return ManufactureredMedicineBatches[msg.sender][index];
+    }
+
+    function setHash(string memory _hash) public {
+        Hash[msg.sender] = _hash;
+    }
+
+    function getHash() public view returns(string memory){
+        return Hash[msg.sender];
     }
 
     /********************************************** Distributer Section ******************************************/

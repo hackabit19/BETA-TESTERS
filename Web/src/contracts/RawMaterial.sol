@@ -13,21 +13,21 @@ contract RawMaterial{
         uint Status
     );
     address productid;
-    bytes32 description;
-    bytes32 farmer_name;
-    bytes32 location;
+    string description;
+    string farmer_name;
+    string location;
     uint quantity;
     address shipper;
     address manufacturer;
     address supplier;
     packageStatus status;
-    bytes32 packageReceiverDescription;
+    string packageReceiverDescription;
 
     constructor (
         address Splr,
-        bytes32 Des,
-        bytes32 FN,
-        bytes32 Loc,
+        string memory Des,
+        string memory FN,
+        string memory Loc,
         uint Quant,
         address Shpr,
         address Rcvr
@@ -45,9 +45,9 @@ contract RawMaterial{
     }
 
     function getSuppliedRawMatrials () public view returns(
-        bytes32 Des,
-        bytes32 FN,
-        bytes32 Loc,
+        string memory Des,
+        string memory FN,
+        string memory Loc,
         uint Quant,
         address Shpr,
         address Rcvr,
