@@ -1,6 +1,8 @@
 # BETA-TESTERS
 This project showcases the journey of Medicine on blockchain.
 
+Zeit Challenge: https://hack2ui-ujvm3e1tg.now.sh
+
 The Pharmaceutical supply chain is the sequence of activities and process to bring raw drugs and matrials from supplier(farms) to processed medicine in Pharm.
 
 #### Problems in Exixting System
