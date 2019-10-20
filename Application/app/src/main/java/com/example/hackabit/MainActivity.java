@@ -36,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BarcodeCapture.class);
-                startActivityForResult(intent, BARCODE_READER);
+//                Intent intent = new Intent(getApplicationContext(), BarcodeCapture.class);
+//                startActivityForResult(intent, BARCODE_READER);
+                startActivity(new Intent(MainActivity.this, MAct.class));
             }
         });
     }
